@@ -7,7 +7,7 @@
     <title>TITLE</title>
     <link rel="stylesheet" href="assets/styles/style.css">
     <style>
-        body{
+        #contents{
             display: flex;
             flex-wrap: wrap;
             justify-content: space-around;
@@ -15,12 +15,12 @@
         img{
             width: 100%;
         }
-        div{
+        #contents div{
             width: 30%;
             text-align: center;
             margin-bottom: 20px;
         }
-        div * {
+        #contents div * {
             margin-bottom: 20px;
         }
         a {
@@ -35,37 +35,30 @@
     <header>
     </header>
 <!-- MAIN -->
-    <main>
-        
+    <main >
+        <div class="user">
+            <label for="">Keyword</label>
+            <input type="text" name="" id="keyword">
+            <button onclick="submit()">Submit</button>
+        </div>
+        <div id="contents"></div>
     </main>
 <!-- FOOTER -->
     <footer>
     </footer>
 <!-- SCRIPT -->
     <script>
-        
-        var url = 'https://newsapi.org/v2/everything?' +
-          'q=Apple&' +
-          'from=2021-12-07&' +
-          'sortBy=popularity&' +
-          'apiKey=a939f33eb3d94a36acd4ccb59fdc33a9';
-//           author: "Dana Rubinstein, Grace Ashford and Jane Gottlieb"
-// content: "Raised in Bethlehem, a town just south of Albany, Sheriff Apple joined the department in 1987, just two years out of high school. He has been a near-constant presence in the local press ever since re… [+1527 chars]"
-// description: "Craig D. Apple Sr. is known among some fellow Democrats as the “Teflon sheriff” for his ability to persevere, even thrive, through trouble that might tarnish less adept politicians."
-// publishedAt: "2021-12-07T10:00:22Z"
-// source: {id: null, name: 'New York Times'}
-// title: "Meet the Sheriff Who Wants to Put Andrew Cuomo Behind Bars"
-// url: "https://www.nytimes.com/2021/12/07/nyregion/sheriff-apple-cuomo-albany.html"
-// urlToImage: "https://static01.nyt.com/images/2021/11/25/nyregion/00albany-sheriff-promo/00albany-sheriff-promo-facebookJumbo.jpg"
-// [[Prototype]]: Object
-
-
-        var req = new Request(url);
-        let key = 'a939f33eb3d94a36acd4ccb59fdc33a9'
-        fetch(url)
+        let contents = document.getElementById('contents')
+        let keyword = ''
+        function submit(){
+            contents.innerHTML = ''
+            keyword = document.getElementById('keyword').value
+            var url = `https://newsapi.org/v2/everything?q=${keyword}&from=2021-12-07&sortBy=popularity&apiKey=a939f33eb3d94a36acd4ccb59fdc33a9`;
+            var req = new Request(url);
+            fetch(url)
             .then(response => response.json())
             .then((data) => {
-                data.articles.forEach(i=> {
+                data.articles.slice(0,9).forEach(i=> {
                     let div = document.createElement('div')
                     let img = document.createElement('img')
                     img.setAttribute('src', i.urlToImage)
@@ -85,10 +78,11 @@
                     anchorTag.setAttribute('href', i.url)
                     anchorTag.textContent = 'READ MORE'
                     div.appendChild(anchorTag)
-                    document.body.appendChild(div)
+                    contents.appendChild(div)
                 })
             })
             .catch(err => console.error(err));
+        }
     </script>
 </body>
 </html>
