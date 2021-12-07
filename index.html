@@ -28,6 +28,14 @@
             background-color: gray;
             width: 30%;
         }
+        .user {
+            background-color: yellow;
+            width: 50%;
+            margin:auto auto;
+            text-align: center;
+            padding: 3%;
+            border-radius: 20px;
+        }
     </style>
 </head>
 <body>
@@ -39,7 +47,11 @@
         <div class="user">
             <label for="">Keyword</label>
             <input type="text" name="" id="keyword">
+            <!-- <label for="">Country</label>
+            <input type="text" name="" id="country" placeholder="us"> -->
             <button onclick="submit()">Submit</button>
+
+            </select>
         </div>
         <div id="contents"></div>
     </main>
@@ -49,36 +61,40 @@
 <!-- SCRIPT -->
     <script>
         let contents = document.getElementById('contents')
-        let keyword = ''
+        let country = 'us'
+        keyword = 'python'
         function submit(){
             contents.innerHTML = ''
-            keyword = document.getElementById('keyword').value
-            var url = `https://newsapi.org/v2/everything?q=${keyword}&from=2021-12-07&sortBy=popularity&apiKey=a939f33eb3d94a36acd4ccb59fdc33a9`;
+            let keyword = document.getElementById('keyword').value
+            // country = document.getElementById('country').value
+            // country=${country}&
+            var url = `http://newsapi.org/v2/everything?q=${keyword}&from=2021-12-07&sortBy=popularity&apiKey=a939f33eb3d94a36acd4ccb59fdc33a9`;
+            console.log(url)
             var req = new Request(url);
             fetch(url)
             .then(response => response.json())
             .then((data) => {
                 data.articles.slice(0,9).forEach(i=> {
-                    let div = document.createElement('div')
-                    let img = document.createElement('img')
-                    img.setAttribute('src', i.urlToImage)
-                    div.appendChild(img)
-                    let title = document.createElement('h3')
-                    title.textContent = i.title
-                    div.appendChild(title)
-                    let desc = document.createElement('p')
-                    desc.textContent = i.description
-                    div.appendChild(desc)
-                    let date = document.createElement('p')
-                    let t = new Date(i.publishedAt)
-                    t = `${t.getFullYear()}-${t.getMonth()}-${t.getDate()}`
-                    date.textContent = t
-                    div.appendChild(date)
-                    let anchorTag = document.createElement('a')
-                    anchorTag.setAttribute('href', i.url)
-                    anchorTag.textContent = 'READ MORE'
-                    div.appendChild(anchorTag)
-                    contents.appendChild(div)
+                let div = document.createElement('div')
+                let img = document.createElement('img')
+                img.setAttribute('src', i.urlToImage)
+                div.appendChild(img)
+                let title = document.createElement('h3')
+                title.textContent = i.title
+                div.appendChild(title)
+                let desc = document.createElement('p')
+                desc.textContent = i.description
+                div.appendChild(desc)
+                let date = document.createElement('p')
+                let t = new Date(i.publishedAt)
+                t = `${t.getFullYear()}-${t.getMonth()}-${t.getDate()}`
+                date.textContent = t
+                div.appendChild(date)
+                let anchorTag = document.createElement('a')
+                anchorTag.setAttribute('href', i.url)
+                anchorTag.textContent = 'READ MORE'
+                div.appendChild(anchorTag)
+                contents.appendChild(div)
                 })
             })
             .catch(err => console.error(err));
