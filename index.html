@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TITLE</title>
+    <link rel="stylesheet" href="assets/styles/style.css">
+    <style>
+        body{
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+        }
+        img{
+            width: 100%;
+        }
+        div{
+            width: 30%;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        div * {
+            margin-bottom: 20px;
+        }
+        a {
+            color: white;
+            background-color: gray;
+            width: 30%;
+        }
+    </style>
+</head>
+<body>
+<!-- HEADER -->
+    <header>
+    </header>
+<!-- MAIN -->
+    <main>
+        
+    </main>
+<!-- FOOTER -->
+    <footer>
+    </footer>
+<!-- SCRIPT -->
+    <script>
+        
+        var url = 'https://newsapi.org/v2/everything?' +
+          'q=Apple&' +
+          'from=2021-12-07&' +
+          'sortBy=popularity&' +
+          'apiKey=a939f33eb3d94a36acd4ccb59fdc33a9';
+//           author: "Dana Rubinstein, Grace Ashford and Jane Gottlieb"
+// content: "Raised in Bethlehem, a town just south of Albany, Sheriff Apple joined the department in 1987, just two years out of high school. He has been a near-constant presence in the local press ever since re… [+1527 chars]"
+// description: "Craig D. Apple Sr. is known among some fellow Democrats as the “Teflon sheriff” for his ability to persevere, even thrive, through trouble that might tarnish less adept politicians."
+// publishedAt: "2021-12-07T10:00:22Z"
+// source: {id: null, name: 'New York Times'}
+// title: "Meet the Sheriff Who Wants to Put Andrew Cuomo Behind Bars"
+// url: "https://www.nytimes.com/2021/12/07/nyregion/sheriff-apple-cuomo-albany.html"
+// urlToImage: "https://static01.nyt.com/images/2021/11/25/nyregion/00albany-sheriff-promo/00albany-sheriff-promo-facebookJumbo.jpg"
+// [[Prototype]]: Object
+
+
+        var req = new Request(url);
+        let key = 'a939f33eb3d94a36acd4ccb59fdc33a9'
+        fetch(url)
+            .then(response => response.json())
+            .then((data) => {
+                data.articles.forEach(i=> {
+                    let div = document.createElement('div')
+                    let img = document.createElement('img')
+                    img.setAttribute('src', i.urlToImage)
+                    div.appendChild(img)
+                    let title = document.createElement('h3')
+                    title.textContent = i.title
+                    div.appendChild(title)
+                    let desc = document.createElement('p')
+                    desc.textContent = i.description
+                    div.appendChild(desc)
+                    let date = document.createElement('p')
+                    let t = new Date(i.publishedAt)
+                    t = `${t.getFullYear()}-${t.getMonth()}-${t.getDate()}`
+                    date.textContent = t
+                    div.appendChild(date)
+                    let anchorTag = document.createElement('a')
+                    anchorTag.setAttribute('href', i.url)
+                    anchorTag.textContent = 'READ MORE'
+                    div.appendChild(anchorTag)
+                    document.body.appendChild(div)
+                })
+            })
+            .catch(err => console.error(err));
+    </script>
+</body>
+</html>
